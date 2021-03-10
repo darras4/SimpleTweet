@@ -30,4 +30,14 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
         android:text="@string/tweet" />
+
+    <TextView
+        android:id="@+id/cCounter"
+        android:layout_width="70dp"
+        android:layout_height="29dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="148dp"
+        android:text="140" />
 </RelativeLayout>

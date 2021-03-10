@@ -5,10 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcel;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -24,6 +27,7 @@ public class ComposeActivity extends AppCompatActivity {
     public static final String TAG = "ComposeActivity";
     public static final int MAX_TWEET_LENGTH = 140;
     EditText etCompose;
+    TextView cCounter;
     Button btnTweet;
 
     TwitterClient client;
@@ -35,7 +39,32 @@ public class ComposeActivity extends AppCompatActivity {
 
         etCompose = findViewById(R.id.etCompose);
         btnTweet = findViewById(R.id.btnTweet);
+        cCounter = findViewById(R.id.cCounter);
         client = TwitterApp.getRestClient(this);
+
+
+        etCompose.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(!s.equals("")){
+                    String remain = String.valueOf((MAX_TWEET_LENGTH - etCompose.getText().toString().length()));
+                    cCounter.setText(remain);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
 
         btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,6 +79,7 @@ public class ComposeActivity extends AppCompatActivity {
                     return;
                 }
                 Toast.makeText(ComposeActivity.this, tweetContent, Toast.LENGTH_LONG).show();
+
                 client.publishTweet(tweetContent, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Headers headers, JSON json) {
@@ -68,6 +98,8 @@ public class ComposeActivity extends AppCompatActivity {
 
                     }
 
+
+
                     @Override
                     public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                         Log.e(TAG, "onFailure", throwable);
@@ -76,5 +108,9 @@ public class ComposeActivity extends AppCompatActivity {
                 });
             }
         });
+
+
+
+
     }
 }
